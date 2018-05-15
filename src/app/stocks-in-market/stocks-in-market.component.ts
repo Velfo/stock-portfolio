@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StocksInMarketService } from '../shared/stocks/index';
+import { MoneyBalanceService } from '../shared/money/index';
 
 @Component({
   selector: 'app-stocks-in-market',
@@ -19,7 +20,8 @@ export class StocksInMarketComponent implements OnInit {
   orderQuantity2: number;
   orderHasBeenPlaced: boolean;
   constructor(
-    private stocksInMarketService: StocksInMarketService
+    private stocksInMarketService: StocksInMarketService,
+    private moneyBalanceService: MoneyBalanceService
   ) { }
 
   ngOnInit() {
@@ -41,19 +43,23 @@ export class StocksInMarketComponent implements OnInit {
     this.stockPrice1 = JSON.parse( localStorage.getItem('boeingPrice')  );
     this.stockPrice2 = JSON.parse( localStorage.getItem('pfizerPrice')  );
   }
-  placeBuyOrder(stockName: string, orderPrice: number, orderQuantity: number){
+  placeBuyOrder(stockName: string, orderPrice: number, orderQuantity: number) {
+    let moneyToSpend = orderPrice * orderQuantity;
+    let moneyInBalance =  this.moneyBalanceService.getMoneyBalance();
     switch (stockName) {
       case 'Pfizer':
         console.log('This is Pfizer');
         console.log('Order price ',  orderPrice);
         console.log('Order quantity ',  orderQuantity);
-        this.displayOrderPlacedNotification()
+        console.log('Money Balance is ', this.moneyBalanceService.getMoneyBalance());
+        this.doMoneyTransaction(moneyToSpend, moneyInBalance);
         break;
       case 'Boeing':
         console.log('This is Boeing');
         console.log('Order price ',  orderPrice);
         console.log('Order quantity ',  orderQuantity);
-        this.displayOrderPlacedNotification()
+        console.log('Money Balance is ', this.moneyBalanceService.getMoneyBalance());
+        this.doMoneyTransaction(moneyToSpend, moneyInBalance);
         break;
     }
   }
@@ -62,5 +68,32 @@ export class StocksInMarketComponent implements OnInit {
     setTimeout(() => {
       this.orderHasBeenPlaced = false;
     }, 1000);
+  }
+  // setNewMoneyBalance(moneyToSpend: number, moneyInBalance: number) {
+  //   let moneyLeft = moneyInBalance - moneyToSpend;
+  //
+  // }
+
+  setNewMoneyBalance(moneyToSpend: number, moneyInBalance: number) {
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log('Async Work Complete');
+        let moneyLeft = moneyInBalance - moneyToSpend;
+        this.moneyBalanceService.setMoneyBalance(moneyLeft);
+        console.log('Now new balance is ', this.moneyBalanceService.getMoneyBalance());
+        resolve();
+        // if (Error) {
+        //   reject();
+        // } else {
+        //   resolve();
+        // }
+      }, 1000);
+    });
+    return promise;
+  }
+  doMoneyTransaction(moneyToSpend: number, moneyInBalance: number) {
+    if (moneyToSpend <= moneyInBalance) {
+      this.setNewMoneyBalance(moneyToSpend, moneyInBalance).then(() => this.displayOrderPlacedNotification());
+    }
   }
 }

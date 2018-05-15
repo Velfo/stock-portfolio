@@ -27,7 +27,7 @@ export class FrontDisplayComponent implements OnInit {
     // The Boeing Company (BA) Stock Prices
     this
       .http
-      .get('https://www.quandl.com/api/v3/datasets/EOD/BA.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF',
+      .get('https://www.quandl.com/api/v3/datasets/EOD/BA.json?start_date=2018-05-15&api_key=Wzssee7oejgiqC3HBrCF',
         {
           headers: new HttpHeaders()
             .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
@@ -45,7 +45,7 @@ export class FrontDisplayComponent implements OnInit {
     // Pfizer Inc. (PFE) Stock Prices
     this
       .http
-      .get('https://www.quandl.com/api/v3/datasets/EOD/PFE.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF',
+      .get('https://www.quandl.com/api/v3/datasets/EOD/PFE.json?start_date=2018-05-15&api_key=Wzssee7oejgiqC3HBrCF',
         {
           headers: new HttpHeaders()
             .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
