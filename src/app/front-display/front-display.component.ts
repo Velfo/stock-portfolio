@@ -11,7 +11,8 @@ export class FrontDisplayComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.quandlCall();
+    this.setCurrentStockPrices();
+    this.setSomeMoreStockPrices();
   }
 
   quandlCall() {
@@ -20,7 +21,90 @@ export class FrontDisplayComponent implements OnInit {
 
       const apiData: any = data;
 
-        console.log(apiData.dataset.column_names[7]);
+      console.log(apiData.dataset.column_names[7]);
     });
+  }
+
+  setCurrentStockPrices() {
+    // The Boeing Company (BA) Stock Prices
+    this
+      .http
+      .get('https://www.quandl.com/api/v3/datasets/EOD/BA.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF',
+        {
+          headers: new HttpHeaders()
+            .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
+        }
+      ).subscribe(data => {
+
+      const apiData: any = data;
+
+      console.log(apiData.dataset);
+    });
+
+    // Pfizer Inc. (PFE) Stock Prices
+    this
+      .http
+      .get('https://www.quandl.com/api/v3/datasets/EOD/PFE.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF',
+        {
+          headers: new HttpHeaders()
+            .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
+        }
+      ).subscribe(data => {
+
+      const apiData: any = data;
+
+      console.log(apiData.dataset);
+    });
+
+  }
+
+  setSomeMoreStockPrices() {
+    // The Boeing Company (BA) Stock Prices
+    this
+      .http
+      .get('https://www.quandl.com/api/v3/datasets/EOD/KO.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF',
+        {
+          headers: new HttpHeaders()
+            .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
+        }
+      ).subscribe(data => {
+
+      const apiData: any = data;
+
+      console.log(apiData.dataset);
+    });
+  }
+
+  setAnotherStockPrices() {
+    // The Boeing Company (BA) Stock Prices
+    this
+      .http
+      .get('https://www.quandl.com/api/v3/datasets/EOD/KO.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF',
+        {
+          headers: new HttpHeaders()
+            .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
+        }
+      ).subscribe(data => {
+
+      const apiData: any = data;
+
+      console.log(apiData.dataset);
+    });
+
+    // Pfizer Inc. (PFE) Stock Price
+    this
+      .http
+      .get('https://www.quandl.com/api/v3/datasets/EOD/MCD.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF',
+        {
+          headers: new HttpHeaders()
+            .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
+        }
+      ).subscribe(data => {
+
+      const apiData: any = data;
+
+      console.log(apiData.dataset);
+    });
+
   }
 }
