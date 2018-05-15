@@ -1,12 +1,29 @@
 <div class='outer-box'>
   <div class="inner-box">
     <h2> Shares available in the market</h2>
-    <button (click)="displayStocks()">Display Stocks!</button>
-    <h3 class="player-details" *ngIf="stockName1">
-          {{stockName1}} ( Share price today {{stockPrice1}})
+    <button (click)="displayStocks()">Display Shares!</button>
+    <h3 *ngIf="stockName1">
+          {{stockName1}} ( Share price today {{stockPrice1}}).
+          Place Buy Order,
+          <label>Price:
+            <input [(ngModel)]="orderPrice1" placeholder="price">
+           </label>
+          <label>Quantity:
+            <input [(ngModel)]="orderQuantity1" placeholder="quantity">
+          </label>
+      <button (click)="placeBuyOrder('Pfizer', orderPrice1, orderQuantity1)">Place Order</button>
     </h3>
-    <h3 class="player-details" *ngIf="stockName2">
+    <h3 *ngIf="stockName2">
           {{stockName2}} (Share price today {{stockPrice2}} )
+          Place Buy Order
+          <label>Price:
+            <input [(ngModel)]="orderPrice2" placeholder="price">
+          </label>
+          <label>Quantity:
+            <input [(ngModel)]="orderQuantity2" placeholder="quantity">
+          </label>
+      <button (click)="placeBuyOrder('Boeing', orderPrice2, orderQuantity2)">Place Order</button>
     </h3>
+    <h3 *ngIf="orderHasBeenPlaced">Your Order Has Been Placed</h3>
   </div>
 </div>

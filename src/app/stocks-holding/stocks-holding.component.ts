@@ -16,4 +16,7 @@ export class StocksHoldingComponent implements OnInit {
   ngOnInit() {
   }
 
+  displayStocks(){
+
+  }
 }

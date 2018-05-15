@@ -7,6 +7,8 @@ import { StocksInMarketService } from './shared/stocks/index';
 
 import { CronSelectionModule } from 'angular2-cron-jobs';
 
+import { FormsModule } from '@angular/forms';
+
 
 import { AppComponent } from './app.component';
 import { FrontDisplayComponent } from './front-display/front-display.component';
@@ -25,7 +27,8 @@ import { StocksHoldingComponent } from './stocks-holding/stocks-holding.componen
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     MoneyBalanceService,

@@ -7,3 +7,22 @@
   width: 550px;
   height: 650px;
 }
+.box_stocks_in_market{
+  position: relative;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #ffffff;
+  border-radius: 4px;
+  width: 1550px;
+  height: 650px;
+}
+
+.box{
+  position: relative;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #ffffff;
+  border-radius: 4px;
+  width: 1550px;
+  height: 650px;
+}
