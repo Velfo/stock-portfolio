@@ -36,9 +36,10 @@ export class FrontDisplayComponent implements OnInit {
 
       const apiData: any = data;
 
-      localStorage.setItem('boeingApi', JSON.stringify(apiData.dataset.data[0][4] ));
+      localStorage.setItem('boeingPrice', JSON.stringify(apiData.dataset.data[0][4] ));
+      localStorage.setItem('boeingName', JSON.stringify(apiData.dataset.name ));
 
-      console.log(apiData.dataset.data[0][4]);
+      console.log(apiData.dataset);
     });
 
     // Pfizer Inc. (PFE) Stock Prices
@@ -53,17 +54,22 @@ export class FrontDisplayComponent implements OnInit {
 
       const apiData: any = data;
 
-      localStorage.setItem('pfizerApi', JSON.stringify(apiData.dataset.data[0][4]) );
+      localStorage.setItem('pfizerPrice', JSON.stringify(apiData.dataset.data[0][4]) );
+      localStorage.setItem('pfizerName', JSON.stringify(apiData.dataset.name ));
 
-      console.log(apiData.dataset.data[0][4]);
+      console.log(apiData.dataset);
     });
 
   }
 
   getBoeingApi() {
-    console.log(JSON.parse( localStorage.getItem('boeingApi')  ) );
+    console.log(JSON.parse( localStorage.getItem('boeingPrice')  ) );
+    console.log(JSON.parse( localStorage.getItem('boeingName')  ) );
+
   }
   getPfizerApi() {
-    console.log(  JSON.parse(   localStorage.getItem('pfizerApi')  ) );
+    console.log(  JSON.parse(   localStorage.getItem('pfizerPrice')  ) );
+    console.log(JSON.parse( localStorage.getItem('pfizerName')  ) );
   }
+
 }
