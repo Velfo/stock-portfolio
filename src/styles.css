@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+.outer-box{
+  position: absolute;
+  width: 87%;
+  height: 87%;
+  left: 5%;
+  top: 6%;
+  border-radius: 1px 1px 1px 1px;
+  border-style: dotted;
+  border-color: #bac2d1;
+  /*overflow-y: scroll*/
+}
+.inner-box{
+  position: absolute;
+  margin-left: 25px;
+}

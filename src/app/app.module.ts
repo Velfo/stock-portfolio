@@ -5,6 +5,8 @@ import { MoneyBalanceService } from './shared/money/index';
 import { StocksHoldingService } from './shared/stocks/index';
 import { StocksInMarketService } from './shared/stocks/index';
 
+import { CronSelectionModule } from 'angular2-cron-jobs';
+
 
 import { AppComponent } from './app.component';
 import { FrontDisplayComponent } from './front-display/front-display.component';
