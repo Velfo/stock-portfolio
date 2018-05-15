@@ -7,12 +7,10 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./front-display.component.css']
 })
 export class FrontDisplayComponent implements OnInit {
-
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.setCurrentStockPrices();
-    this.setSomeMoreStockPrices();
   }
 
   quandlCall() {
@@ -38,7 +36,9 @@ export class FrontDisplayComponent implements OnInit {
 
       const apiData: any = data;
 
-      console.log(apiData.dataset);
+      localStorage.setItem('boeingApi', JSON.stringify(apiData.dataset.data[0][4] ));
+
+      console.log(apiData.dataset.data[0][4]);
     });
 
     // Pfizer Inc. (PFE) Stock Prices
@@ -53,58 +53,17 @@ export class FrontDisplayComponent implements OnInit {
 
       const apiData: any = data;
 
-      console.log(apiData.dataset);
+      localStorage.setItem('pfizerApi', JSON.stringify(apiData.dataset.data[0][4]) );
+
+      console.log(apiData.dataset.data[0][4]);
     });
 
   }
 
-  setSomeMoreStockPrices() {
-    // The Boeing Company (BA) Stock Prices
-    this
-      .http
-      .get('https://www.quandl.com/api/v3/datasets/EOD/KO.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF',
-        {
-          headers: new HttpHeaders()
-            .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
-        }
-      ).subscribe(data => {
-
-      const apiData: any = data;
-
-      console.log(apiData.dataset);
-    });
+  getBoeingApi() {
+    console.log(JSON.parse( localStorage.getItem('boeingApi')  ) );
   }
-
-  setAnotherStockPrices() {
-    // The Boeing Company (BA) Stock Prices
-    this
-      .http
-      .get('https://www.quandl.com/api/v3/datasets/EOD/KO.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF',
-        {
-          headers: new HttpHeaders()
-            .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
-        }
-      ).subscribe(data => {
-
-      const apiData: any = data;
-
-      console.log(apiData.dataset);
-    });
-
-    // Pfizer Inc. (PFE) Stock Price
-    this
-      .http
-      .get('https://www.quandl.com/api/v3/datasets/EOD/MCD.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF',
-        {
-          headers: new HttpHeaders()
-            .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
-        }
-      ).subscribe(data => {
-
-      const apiData: any = data;
-
-      console.log(apiData.dataset);
-    });
-
+  getPfizerApi() {
+    console.log(  JSON.parse(   localStorage.getItem('pfizerApi')  ) );
   }
 }
