@@ -30,41 +30,29 @@ export class StocksInMarketComponent implements OnInit {
     { name: 'Pfizer', quantity: 0 },
     { name: 'Boeing', quantity: 0 },
   ];
-  addedShare: Share;
-  numberOfShares: number;
   constructor(
     private stocksInMarketService: StocksInMarketService,
     private moneyBalanceService: MoneyBalanceService
   ) { }
-
   ngOnInit() {
-    // this.getStocksAndPriceInMarket();
     this.initialiseMoneyBalance().then(() => this.money = this.moneyBalanceService.getMoneyBalance());
-    if (!JSON.parse( localStorage.getItem('shares')  )) {
-      localStorage.setItem('shares', JSON.stringify(this.sharesBalance));
-    }
-  }
-
-  getStocksAndPriceInMarket() {
-      // this.stocksInMarketService.getStocks();
-  }
-  displayStocksInMarket() {
-    // this.stocksInMarketService.getStocks();
-
   }
   displayStocks() {
-
     this.stockName1 = JSON.parse(   localStorage.getItem('pfizerName')  );
     this.stockName2 = JSON.parse( localStorage.getItem('boeingName')  );
-
     this.stockPrice2 = JSON.parse( localStorage.getItem('boeingPrice')  );
     this.stockPrice1 = JSON.parse( localStorage.getItem('pfizerPrice')  );
-
-    // let sharesFromLocalStore: any = JSON.parse( localStorage.getItem('shares')  );
-    // this.sharesBalance[0].quantity = sharesFromLocalStore[0].quantity;
-    // this.sharesBalance[1].quantity = sharesFromLocalStore[1].quantity;
+    if (JSON.parse( localStorage.getItem('shares')  )) {
+      const theSharesFromLocalStorage: any = JSON.parse( localStorage.getItem('shares')  );
+      this.sharesBalance[0].quantity = theSharesFromLocalStorage[0].quantity;
+      this.sharesBalance[1].quantity = theSharesFromLocalStorage[1].quantity;
+    }
+    if ( JSON.parse( localStorage.getItem('moneyBalance')) ) {
+      this.money = JSON.parse( localStorage.getItem('moneyBalance'));
+    } else {
+      this.money = this.moneyBalanceService.getMoneyBalance();
+    }
   }
-
   placeBuyOrder(stockName: string, orderPrice: number, orderQuantity: number) {
     let moneyToSpend = orderPrice * orderQuantity;
     let moneyInBalance =  this.moneyBalanceService.getMoneyBalance();
@@ -90,14 +78,6 @@ export class StocksInMarketComponent implements OnInit {
   placeSellOrder(stockName: string, orderPrice: number, orderQuantity: number) {
     let moneyToReceive = orderPrice * orderQuantity;
     let moneyInBalance =  this.moneyBalanceService.getMoneyBalance();
-
-
-     if (typeof this.sharesBalance[0].quantity === 'number') {
-       console.log('the quantity is number');
-     } else {
-       console.log('the quantity is not a number');
-     }
-
     switch (stockName) {
       case 'Pfizer':
         if (orderQuantity > this.sharesBalance[0].quantity){
@@ -205,11 +185,9 @@ export class StocksInMarketComponent implements OnInit {
       this.displayNotEnoughtMoneyNotification();
     }
   }
-
   doMoneyTransactionSell(moneyToReceive: number, moneyInBalance: number) {
       this.setNewMoneyBalanceSell(moneyToReceive, moneyInBalance).then(() => this.displayOrderPlacedNotification());
   }
-
   initialiseMoneyBalance() {
     let promise = new Promise((resolve, reject) => {
       this.moneyBalanceService.setBalance();

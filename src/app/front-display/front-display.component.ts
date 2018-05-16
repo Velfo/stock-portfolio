@@ -19,7 +19,7 @@ export class FrontDisplayComponent implements OnInit {
     let dd = today.getDate() - 1; // to get yesterdays price, becasue the latest price available is a day before
     let mm = today.getMonth() + 1; // January is 0!
     let yyyy = today.getFullYear();
-    
+
     let dateString = yyyy + '-' + mm + '-' + dd;
     let apiTocken = 'Wzssee7oejgiqC3HBrCF';
     let quandlUrlBoeing = 'https://www.quandl.com/api/v3/datasets/EOD/BA.json?start_date=' + dateString + '&api_key=' + apiTocken;
