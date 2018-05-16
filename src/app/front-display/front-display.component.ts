@@ -19,7 +19,7 @@ export class FrontDisplayComponent implements OnInit {
   setCurrentStockPrices() {
     // set the date for today
     let today = new Date();
-    let dd = today.getDate() - 1; // to get yesterdays price, becasue the latest price available is a day before
+    let dd = today.getDate() - 2; // to get yesterdays price, becasue the latest price available is a day before
     let mm = today.getMonth() + 1; // January is 0!
     let yyyy = today.getFullYear();
     let dateString = yyyy + '-' + mm + '-' + dd;
