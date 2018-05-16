@@ -26,6 +26,7 @@ export class StocksInMarketComponent implements OnInit {
   priceTooLow: boolean;
   shareBalanceTooLow: boolean;
   money: number;
+  equity: number;
   sharesBalance: Share[] = [
     { name: 'Pfizer', quantity: 0 },
     { name: 'Boeing', quantity: 0 },
@@ -55,6 +56,10 @@ export class StocksInMarketComponent implements OnInit {
     } else {
       this.money = this.moneyBalanceService.getMoneyBalance();
     }
+    // this.equity = this.money + this.sharesBalance[0].quantity * this.stockPrice1 + this.sharesBalance[1].quantity * this.stockPrice2;
+    this.calculateEquity();
+
+    // this.equity = 45;
   }
   /**
    * Placing buy orders on the two stocks available in the market */
@@ -79,6 +84,14 @@ export class StocksInMarketComponent implements OnInit {
         }
         break;
     }
+  }
+  /**
+   * Calgulates new equity after sell or buy order */
+  calculateEquity() {
+    let boeingPrice = JSON.parse( localStorage.getItem('boeingPrice')  );
+    let pfizerPrice = JSON.parse( localStorage.getItem('pfizerPrice')  );
+    this.equity = this.moneyBalanceService.getMoneyBalance() + boeingPrice * this.sharesBalance[1].quantity
+      + pfizerPrice * this.sharesBalance[0].quantity;
   }
   /**
    * Placing sell orders on the two stocks that the user can have in the portfolio */
@@ -148,9 +161,10 @@ export class StocksInMarketComponent implements OnInit {
    * Notification to display when the order (sell or buy) are placed */
   displayOrderPlacedNotification() {
     this.orderHasBeenPlaced = true;
+    this.money = this.moneyBalanceService.getMoneyBalance();
     setTimeout(() => {
       this.orderHasBeenPlaced = false;
-      this.money = this.moneyBalanceService.getMoneyBalance();
+      this.calculateEquity();
     }, 1000);
   }
   /**

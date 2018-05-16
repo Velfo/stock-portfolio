@@ -17,7 +17,7 @@ export class FrontDisplayComponent implements OnInit {
    * Uses https://www.quandl.com/data/EOD-End-of-Day-US-Stock-Prices
    * Storing the data in the localStorage */
   setCurrentStockPrices() {
-    //set the date for today
+    // set the date for today
     let today = new Date();
     let dd = today.getDate() - 1; // to get yesterdays price, becasue the latest price available is a day before
     let mm = today.getMonth() + 1; // January is 0!
