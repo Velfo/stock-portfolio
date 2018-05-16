@@ -35,6 +35,9 @@ export class StocksInMarketComponent implements OnInit {
   ngOnInit() {
     // this.getStocksAndPriceInMarket();
     this.initialiseMoneyBalance().then(() => this.money = this.moneyBalanceService.getMoneyBalance());
+    if (!JSON.parse( localStorage.getItem('shares')  )) {
+      localStorage.setItem('shares', JSON.stringify(this.sharesBalance));
+    }
   }
 
   getStocksAndPriceInMarket() {
@@ -51,6 +54,10 @@ export class StocksInMarketComponent implements OnInit {
 
     this.stockPrice2 = JSON.parse( localStorage.getItem('boeingPrice')  );
     this.stockPrice1 = JSON.parse( localStorage.getItem('pfizerPrice')  );
+
+    // let sharesFromLocalStore: any = JSON.parse( localStorage.getItem('shares')  );
+    // this.sharesBalance[0].quantity = sharesFromLocalStore[0].quantity;
+    // this.sharesBalance[1].quantity = sharesFromLocalStore[1].quantity;
   }
 
   placeBuyOrder(stockName: string, orderPrice: number, orderQuantity: number) {
@@ -88,6 +95,7 @@ export class StocksInMarketComponent implements OnInit {
           case 'other':
             break;
         }
+        localStorage.setItem('shares', JSON.stringify(this.sharesBalance));
         console.log('this is our shares balance ', this.sharesBalance);
       }
     }

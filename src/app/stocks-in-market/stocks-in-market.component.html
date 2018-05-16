@@ -30,6 +30,37 @@
   </div>
   <h3 *ngIf="stockName2" class='shares-balance'>
     Shares I am holding
+    <h2> {{sharesBalance[0].name}}
+      <label>
+        Quantity: {{sharesBalance[0].quantity}}
+      </label>
+    </h2>
+    <h3 *ngIf="stockName2">
+      Place Sell Order
+      <label>Price:
+        <input [(ngModel)]="orderPrice2" placeholder="price">
+      </label>
+      <label>Quantity:
+        <input [(ngModel)]="orderQuantity2" placeholder="quantity">
+      </label>
+      <button (click)="placeBuyOrder('Boeing', orderPrice2, orderQuantity2)">Place Order</button>
+    </h3>
+    <h2> {{sharesBalance[1].name}}
+      <label>
+        Quantity: {{sharesBalance[1].quantity}}
+      </label>
+    </h2>
+    <h3 *ngIf="stockName2">
+      Place Sell Order
+      <label>Price:
+        <input [(ngModel)]="orderPrice2" placeholder="price">
+      </label>
+      <label>Quantity:
+        <input [(ngModel)]="orderQuantity2" placeholder="quantity">
+      </label>
+      <button (click)="placeBuyOrder('Boeing', orderPrice2, orderQuantity2)">Place Order</button>
+    </h3>
   </h3>
+
   <div *ngIf="money" class='available-balance'> Available balance {{money}}</div>
 </div>
