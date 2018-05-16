@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StocksInMarketService } from '../shared/stocks/index';
 import { MoneyBalanceService } from '../shared/money/index';
+import { Share } from '../shared/shares';
 
 @Component({
   selector: 'app-stocks-in-market',
@@ -20,6 +21,12 @@ export class StocksInMarketComponent implements OnInit {
   noEnoughMoney: boolean;
   priceTooLow: boolean;
   money: number;
+  sharesBalance: Share[] = [
+    { name: 'Pfizer', quantity: 0 },
+    { name: 'Boeing', quantity: 0 },
+  ];
+  addedShare: Share;
+  numberOfShares: number;
   constructor(
     private stocksInMarketService: StocksInMarketService,
     private moneyBalanceService: MoneyBalanceService
@@ -45,28 +52,47 @@ export class StocksInMarketComponent implements OnInit {
     this.stockPrice2 = JSON.parse( localStorage.getItem('boeingPrice')  );
     this.stockPrice1 = JSON.parse( localStorage.getItem('pfizerPrice')  );
   }
+
   placeBuyOrder(stockName: string, orderPrice: number, orderQuantity: number) {
     let moneyToSpend = orderPrice * orderQuantity;
     let moneyInBalance =  this.moneyBalanceService.getMoneyBalance();
     switch (stockName) {
       case 'Pfizer':
-        console.log('the amount of stockPrice2 is ', this.stockPrice1)
         if (this.stockPrice1 > orderPrice) {
             this.displayPriceTooLowNotification();
           } else {
+           this.pushToSharesArray(stockName, orderQuantity);
            this.doMoneyTransaction(moneyToSpend, moneyInBalance);
           }
         break;
       case 'Boeing':
-        console.log('the amount of stockPrice1 is ', this.stockPrice2)
         if (this.stockPrice2 > orderPrice) {
           this.displayPriceTooLowNotification();
         } else {
+          this.pushToSharesArray(stockName, orderQuantity);
           this.doMoneyTransaction(moneyToSpend, moneyInBalance);
         }
         break;
     }
   }
+  pushToSharesArray(stockName: string, orderQuantity: number){
+    if ( this.sharesBalance.length > 0 ) {
+      for (let i of this.sharesBalance) {
+        switch (i.name) {
+          case stockName:
+            console.log('The name is ', i.name)
+            let orderQuantityNumber = +orderQuantity;
+            let iquantityNumber = +i.quantity;
+            i.quantity = iquantityNumber + orderQuantityNumber;
+            break;
+          case 'other':
+            break;
+        }
+        console.log('this is our shares balance ', this.sharesBalance);
+      }
+    }
+  }
+
   displayOrderPlacedNotification() {
     this.orderHasBeenPlaced = true;
     setTimeout(() => {
@@ -88,13 +114,10 @@ export class StocksInMarketComponent implements OnInit {
   }
   setNewMoneyBalance(moneyToSpend: number, moneyInBalance: number) {
     let promise = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log('Async Work Complete');
         let moneyLeft = moneyInBalance - moneyToSpend;
         this.moneyBalanceService.setMoneyBalance(moneyLeft);
         console.log('Now new balance is ', this.moneyBalanceService.getMoneyBalance());
         resolve();
-      }, 1000);
     });
     return promise;
   }
