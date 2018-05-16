@@ -24,8 +24,12 @@
           </label>
       <button (click)="placeBuyOrder('Boeing', orderPrice2, orderQuantity2)">Place Order</button>
     </h3>
-    <h3 *ngIf="orderHasBeenPlaced">Your Order Has Been Placed</h3>
-    <h3 *ngIf="noEnoughMoney">There is no enough money in balance</h3>
+    <h3 *ngIf="orderHasBeenPlaced" class='notifications-success'>Your Order Has Been Placed</h3>
+    <h3 *ngIf="noEnoughMoney" class='notifications-failure'>There is no enough money in balance</h3>
+    <h3 *ngIf="priceTooLow" class='notifications-failure'>The set price is too low</h3>
   </div>
+  <h3 *ngIf="stockName2" class='shares-balance'>
+    Shares I am holding
+  </h3>
   <div *ngIf="money" class='available-balance'> Available balance {{money}}</div>
 </div>

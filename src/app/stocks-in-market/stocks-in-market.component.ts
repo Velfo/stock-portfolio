@@ -18,6 +18,7 @@ export class StocksInMarketComponent implements OnInit {
   orderQuantity2: number;
   orderHasBeenPlaced: boolean;
   noEnoughMoney: boolean;
+  priceTooLow: boolean;
   money: number;
   constructor(
     private stocksInMarketService: StocksInMarketService,
@@ -41,18 +42,28 @@ export class StocksInMarketComponent implements OnInit {
     this.stockName1 = JSON.parse(   localStorage.getItem('pfizerName')  );
     this.stockName2 = JSON.parse( localStorage.getItem('boeingName')  );
 
-    this.stockPrice1 = JSON.parse( localStorage.getItem('boeingPrice')  );
-    this.stockPrice2 = JSON.parse( localStorage.getItem('pfizerPrice')  );
+    this.stockPrice2 = JSON.parse( localStorage.getItem('boeingPrice')  );
+    this.stockPrice1 = JSON.parse( localStorage.getItem('pfizerPrice')  );
   }
   placeBuyOrder(stockName: string, orderPrice: number, orderQuantity: number) {
     let moneyToSpend = orderPrice * orderQuantity;
     let moneyInBalance =  this.moneyBalanceService.getMoneyBalance();
     switch (stockName) {
       case 'Pfizer':
-        this.doMoneyTransaction(moneyToSpend, moneyInBalance);
+        console.log('the amount of stockPrice2 is ', this.stockPrice1)
+        if (this.stockPrice1 > orderPrice) {
+            this.displayPriceTooLowNotification();
+          } else {
+           this.doMoneyTransaction(moneyToSpend, moneyInBalance);
+          }
         break;
       case 'Boeing':
-        this.doMoneyTransaction(moneyToSpend, moneyInBalance);
+        console.log('the amount of stockPrice1 is ', this.stockPrice2)
+        if (this.stockPrice2 > orderPrice) {
+          this.displayPriceTooLowNotification();
+        } else {
+          this.doMoneyTransaction(moneyToSpend, moneyInBalance);
+        }
         break;
     }
   }
@@ -61,6 +72,12 @@ export class StocksInMarketComponent implements OnInit {
     setTimeout(() => {
       this.orderHasBeenPlaced = false;
       this.money = this.moneyBalanceService.getMoneyBalance();
+    }, 1000);
+  }
+  displayPriceTooLowNotification() {
+    this.priceTooLow = true;
+    setTimeout(() => {
+      this.priceTooLow = false;
     }, 1000);
   }
   displayNotEnoughtMoneyNotification() {

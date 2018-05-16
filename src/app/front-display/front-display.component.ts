@@ -57,6 +57,18 @@ export class FrontDisplayComponent implements OnInit {
       localStorage.setItem('pfizerPrice', JSON.stringify(apiData.dataset.data[0][4]) );
       localStorage.setItem('pfizerName', JSON.stringify(apiData.dataset.name ));
 
+      let key = 'shares';
+
+      let userTestStatus: { id: number, name: string }[] = [
+        { id: 0, name: 'Available' },
+        { id: 1, name: 'Ready' },
+        { id: 2, name: 'Started' }
+      ];
+
+      let myObj = { name: 'Skip', breed: 'Labrador' };
+
+      localStorage.setItem(key, JSON.stringify(userTestStatus));
+
       console.log(apiData.dataset);
     });
 
@@ -65,11 +77,13 @@ export class FrontDisplayComponent implements OnInit {
   getBoeingApi() {
     console.log(JSON.parse( localStorage.getItem('boeingPrice')  ) );
     console.log(JSON.parse( localStorage.getItem('boeingName')  ) );
-
+    console.log(JSON.parse( localStorage.getItem('shares')  ) );
+    const testArray: any = JSON.parse( localStorage.getItem('shares')  );
+    console.log('The array is ', testArray[0]);
   }
   getPfizerApi() {
     console.log(  JSON.parse(   localStorage.getItem('pfizerPrice')  ) );
-    console.log(JSON.parse( localStorage.getItem('pfizerName')  ) );
+    console.log(JSON.parse( localStorage.getItem('pfizerName')[1]  ) );
   }
 
 }

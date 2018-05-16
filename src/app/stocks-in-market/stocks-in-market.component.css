@@ -12,5 +12,18 @@ box{
 .available-balance{
   position: absolute;
   bottom: 10%;
-  left: 5%;
+  left: 2%;
+}
+.shares-balance{
+  position: absolute;
+  top: 35%;
+  left: 2%;
+}
+
+.notifications-success{
+  color: green ;
+}
+
+.notifications-failure{
+  color: red ;
 }

@@ -25,19 +25,6 @@ export class MoneyBalanceComponent implements OnInit {
 
   initialiseMoneyBalance() {
     let promise = new Promise((resolve, reject) => {
-      // setTimeout(() => {
-      //   console.log('Async Work Complete');
-      //   let moneyLeft = moneyInBalance - moneyToSpend;
-      //   this.moneyBalanceService.setMoneyBalance(moneyLeft);
-      //   console.log('Now new balance is ', this.moneyBalanceService.getMoneyBalance());
-      //   resolve();
-      //   // if (Error) {
-      //   //   reject();
-      //   // } else {
-      //   //   resolve();
-      //   // }
-      // }, 1000);
-
       if ( JSON.parse( localStorage.getItem('moneyBalance')  )) {
         this.moneyBalanceService.setMoneyBalance(JSON.parse( localStorage.getItem('moneyBalance')  ));
       } else {
