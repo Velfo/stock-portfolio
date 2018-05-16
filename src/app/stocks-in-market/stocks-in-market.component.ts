@@ -82,6 +82,20 @@ export class StocksInMarketComponent implements OnInit {
         break;
     }
   }
+  placeSellOrder(stockName: string, orderPrice: number, orderQuantity: number) {
+    let moneyToReceive = orderPrice * orderQuantity;
+    let moneyInBalance =  this.moneyBalanceService.getMoneyBalance();
+    switch (stockName) {
+      case 'Pfizer':
+          this.removeFromSharesArray(stockName, orderQuantity);
+          this.doMoneyTransactionSell(moneyToReceive, moneyInBalance);
+        break;
+      case 'Boeing':
+          this.removeFromSharesArray(stockName, orderQuantity);
+          this.doMoneyTransactionSell(moneyToReceive, moneyInBalance);
+        break;
+    }
+  }
   pushToSharesArray(stockName: string, orderQuantity: number){
     if ( this.sharesBalance.length > 0 ) {
       for (let i of this.sharesBalance) {
@@ -91,6 +105,25 @@ export class StocksInMarketComponent implements OnInit {
             let orderQuantityNumber = +orderQuantity;
             let iquantityNumber = +i.quantity;
             i.quantity = iquantityNumber + orderQuantityNumber;
+            break;
+          case 'other':
+            break;
+        }
+        localStorage.setItem('shares', JSON.stringify(this.sharesBalance));
+        console.log('this is our shares balance ', this.sharesBalance);
+      }
+    }
+  }
+
+  removeFromSharesArray(stockName: string, orderQuantity: number){
+    if ( this.sharesBalance.length > 0 ) {
+      for (let i of this.sharesBalance) {
+        switch (i.name) {
+          case stockName:
+            console.log('The name is ', i.name)
+            let orderQuantityNumber = +orderQuantity;
+            let iquantityNumber = +i.quantity;
+            i.quantity = iquantityNumber - orderQuantityNumber;
             break;
           case 'other':
             break;
@@ -129,12 +162,25 @@ export class StocksInMarketComponent implements OnInit {
     });
     return promise;
   }
+  setNewMoneyBalanceSell(moneyToReceive: number, moneyInBalance: number) {
+    let promise = new Promise((resolve, reject) => {
+      let newMoneyBalance = moneyInBalance + moneyToReceive;
+      this.moneyBalanceService.setMoneyBalance(newMoneyBalance);
+      console.log('Now new balance is ', this.moneyBalanceService.getMoneyBalance());
+      resolve();
+    });
+    return promise;
+  }
   doMoneyTransaction(moneyToSpend: number, moneyInBalance: number) {
     if (moneyToSpend <= moneyInBalance) {
       this.setNewMoneyBalance(moneyToSpend, moneyInBalance).then(() => this.displayOrderPlacedNotification());
     } else {
       this.displayNotEnoughtMoneyNotification();
     }
+  }
+
+  doMoneyTransactionSell(moneyToReceive: number, moneyInBalance: number) {
+      this.setNewMoneyBalanceSell(moneyToReceive, moneyInBalance).then(() => this.displayOrderPlacedNotification());
   }
 
   initialiseMoneyBalance() {
