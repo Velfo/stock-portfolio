@@ -17,9 +17,14 @@ export class StocksInMarketComponent implements OnInit {
   orderQuantity1: number;
   orderPrice2: number;
   orderQuantity2: number;
+  sellOrderPrice1: number;
+  sellOrderQuantity1: number;
+  sellOrderPrice2: number;
+  sellOrderQuantity2: number;
   orderHasBeenPlaced: boolean;
   noEnoughMoney: boolean;
   priceTooLow: boolean;
+  shareBalanceTooLow: boolean;
   money: number;
   sharesBalance: Share[] = [
     { name: 'Pfizer', quantity: 0 },
@@ -85,14 +90,30 @@ export class StocksInMarketComponent implements OnInit {
   placeSellOrder(stockName: string, orderPrice: number, orderQuantity: number) {
     let moneyToReceive = orderPrice * orderQuantity;
     let moneyInBalance =  this.moneyBalanceService.getMoneyBalance();
+
+
+     if (typeof this.sharesBalance[0].quantity === 'number') {
+       console.log('the quantity is number');
+     } else {
+       console.log('the quantity is not a number');
+     }
+
     switch (stockName) {
       case 'Pfizer':
+        if (orderQuantity > this.sharesBalance[0].quantity){
+          this.displayNotEnoughtSharesNotification();
+        } else {
           this.removeFromSharesArray(stockName, orderQuantity);
           this.doMoneyTransactionSell(moneyToReceive, moneyInBalance);
+        }
         break;
       case 'Boeing':
+        if (orderQuantity > this.sharesBalance[1].quantity){
+          this.displayNotEnoughtSharesNotification();
+        } else {
           this.removeFromSharesArray(stockName, orderQuantity);
           this.doMoneyTransactionSell(moneyToReceive, moneyInBalance);
+        }
         break;
     }
   }
@@ -139,6 +160,12 @@ export class StocksInMarketComponent implements OnInit {
     setTimeout(() => {
       this.orderHasBeenPlaced = false;
       this.money = this.moneyBalanceService.getMoneyBalance();
+    }, 1000);
+  }
+  displayNotEnoughtSharesNotification() {
+    this.shareBalanceTooLow = true;
+    setTimeout(() => {
+      this.shareBalanceTooLow = false;
     }, 1000);
   }
   displayPriceTooLowNotification() {
