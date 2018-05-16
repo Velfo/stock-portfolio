@@ -25,5 +25,7 @@
       <button (click)="placeBuyOrder('Boeing', orderPrice2, orderQuantity2)">Place Order</button>
     </h3>
     <h3 *ngIf="orderHasBeenPlaced">Your Order Has Been Placed</h3>
+    <h3 *ngIf="noEnoughMoney">There is no enough money in balance</h3>
   </div>
+  <div *ngIf="money" class='available-balance'> Available balance {{money}}</div>
 </div>

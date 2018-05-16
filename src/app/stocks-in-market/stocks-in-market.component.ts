@@ -8,8 +8,6 @@ import { MoneyBalanceService } from '../shared/money/index';
   styleUrls: ['./stocks-in-market.component.css']
 })
 export class StocksInMarketComponent implements OnInit {
-
-  stocks: Object[];
   stockName1: string;
   stockName2: string;
   stockPrice1: number;
@@ -19,6 +17,8 @@ export class StocksInMarketComponent implements OnInit {
   orderPrice2: number;
   orderQuantity2: number;
   orderHasBeenPlaced: boolean;
+  noEnoughMoney: boolean;
+  money: number;
   constructor(
     private stocksInMarketService: StocksInMarketService,
     private moneyBalanceService: MoneyBalanceService
@@ -26,6 +26,7 @@ export class StocksInMarketComponent implements OnInit {
 
   ngOnInit() {
     // this.getStocksAndPriceInMarket();
+    this.initialiseMoneyBalance().then(() => this.money = this.moneyBalanceService.getMoneyBalance());
   }
 
   getStocksAndPriceInMarket() {
@@ -48,17 +49,9 @@ export class StocksInMarketComponent implements OnInit {
     let moneyInBalance =  this.moneyBalanceService.getMoneyBalance();
     switch (stockName) {
       case 'Pfizer':
-        console.log('This is Pfizer');
-        console.log('Order price ',  orderPrice);
-        console.log('Order quantity ',  orderQuantity);
-        console.log('Money Balance is ', this.moneyBalanceService.getMoneyBalance());
         this.doMoneyTransaction(moneyToSpend, moneyInBalance);
         break;
       case 'Boeing':
-        console.log('This is Boeing');
-        console.log('Order price ',  orderPrice);
-        console.log('Order quantity ',  orderQuantity);
-        console.log('Money Balance is ', this.moneyBalanceService.getMoneyBalance());
         this.doMoneyTransaction(moneyToSpend, moneyInBalance);
         break;
     }
@@ -67,13 +60,15 @@ export class StocksInMarketComponent implements OnInit {
     this.orderHasBeenPlaced = true;
     setTimeout(() => {
       this.orderHasBeenPlaced = false;
+      this.money = this.moneyBalanceService.getMoneyBalance();
     }, 1000);
   }
-  // setNewMoneyBalance(moneyToSpend: number, moneyInBalance: number) {
-  //   let moneyLeft = moneyInBalance - moneyToSpend;
-  //
-  // }
-
+  displayNotEnoughtMoneyNotification() {
+    this.noEnoughMoney = true;
+    setTimeout(() => {
+      this.noEnoughMoney = false;
+    }, 1000);
+  }
   setNewMoneyBalance(moneyToSpend: number, moneyInBalance: number) {
     let promise = new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -82,11 +77,6 @@ export class StocksInMarketComponent implements OnInit {
         this.moneyBalanceService.setMoneyBalance(moneyLeft);
         console.log('Now new balance is ', this.moneyBalanceService.getMoneyBalance());
         resolve();
-        // if (Error) {
-        //   reject();
-        // } else {
-        //   resolve();
-        // }
       }, 1000);
     });
     return promise;
@@ -94,6 +84,15 @@ export class StocksInMarketComponent implements OnInit {
   doMoneyTransaction(moneyToSpend: number, moneyInBalance: number) {
     if (moneyToSpend <= moneyInBalance) {
       this.setNewMoneyBalance(moneyToSpend, moneyInBalance).then(() => this.displayOrderPlacedNotification());
+    } else {
+      this.displayNotEnoughtMoneyNotification();
     }
+  }
+
+  initialiseMoneyBalance() {
+    let promise = new Promise((resolve, reject) => {
+      this.moneyBalanceService.setBalance();
+    });
+    return promise;
   }
 }

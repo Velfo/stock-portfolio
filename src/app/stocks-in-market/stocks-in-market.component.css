@@ -9,4 +9,8 @@ box{
   margin: 25px;
 }
 
-
+.available-balance{
+  position: absolute;
+  bottom: 10%;
+  left: 5%;
+}
