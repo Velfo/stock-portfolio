@@ -13,21 +13,21 @@ export class FrontDisplayComponent implements OnInit {
     this.setCurrentStockPrices();
   }
 
-  quandlCall() {
-    this
-      .http.get('https://www.quandl.com/api/v3/datasets/EOD/HD.json?start_date=2018-05-14&api_key=Wzssee7oejgiqC3HBrCF').subscribe(data => {
-
-      const apiData: any = data;
-
-      console.log(apiData.dataset.column_names[7]);
-    });
-  }
-
   setCurrentStockPrices() {
+    //set the date for today
+    let today = new Date();
+    let dd = today.getDate() - 1; // to get yesterdays price, becasue the latest price available is a day before
+    let mm = today.getMonth() + 1; // January is 0!
+    let yyyy = today.getFullYear();
+    
+    let dateString = yyyy + '-' + mm + '-' + dd;
+    let apiTocken = 'Wzssee7oejgiqC3HBrCF';
+    let quandlUrlBoeing = 'https://www.quandl.com/api/v3/datasets/EOD/BA.json?start_date=' + dateString + '&api_key=' + apiTocken;
+    let quandlUrlPfizer = 'https://www.quandl.com/api/v3/datasets/EOD/PFE.json?start_date=' + dateString + '&api_key=' + apiTocken;
     // The Boeing Company (BA) Stock Prices
     this
       .http
-      .get('https://www.quandl.com/api/v3/datasets/EOD/BA.json?start_date=2018-05-15&api_key=Wzssee7oejgiqC3HBrCF',
+      .get(quandlUrlBoeing,
         {
           headers: new HttpHeaders()
             .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
@@ -42,10 +42,10 @@ export class FrontDisplayComponent implements OnInit {
       console.log(apiData.dataset);
     });
 
-    // Pfizer Inc. (PFE) Stock Prices
+    // Pfizer Inc. (PFE) Stock Price
     this
       .http
-      .get('https://www.quandl.com/api/v3/datasets/EOD/PFE.json?start_date=2018-05-15&api_key=Wzssee7oejgiqC3HBrCF',
+      .get(quandlUrlPfizer,
         {
           headers: new HttpHeaders()
             .set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*')
@@ -56,18 +56,6 @@ export class FrontDisplayComponent implements OnInit {
 
       localStorage.setItem('pfizerPrice', JSON.stringify(apiData.dataset.data[0][4]) );
       localStorage.setItem('pfizerName', JSON.stringify(apiData.dataset.name ));
-
-      let key = 'shares';
-
-      let userTestStatus: { id: number, name: string }[] = [
-        { id: 0, name: 'Available' },
-        { id: 1, name: 'Ready' },
-        { id: 2, name: 'Started' }
-      ];
-
-      let myObj = { name: 'Skip', breed: 'Labrador' };
-
-      localStorage.setItem(key, JSON.stringify(userTestStatus));
 
       console.log(apiData.dataset);
     });
