@@ -1,6 +1,6 @@
 # StockPortfolio
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
+Display application that pulls staocks API from Quandl and displays it on the front end. Users can also buy and sell stocks and check their available balance.  This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 
 ## Development server
 
